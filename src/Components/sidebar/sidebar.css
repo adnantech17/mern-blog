@@ -1,0 +1,58 @@
+.sidebar {
+  flex: 3;
+}
+
+.sidebarCats {
+  margin-top: 1rem;
+}
+
+.sidebarCat {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: black solid 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebarCat:hover {
+  color: rgb(0, 102, 255);
+}
+
+.sidebarTags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.sidebarTag {
+  background-color: #aaa;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+}
+
+.sidebarTag:hover {
+  background-color: rgb(0, 102, 255);
+  color: white;
+}
+
+.sidebarIcon {
+  font-size: 40px;
+  margin: 10px;
+  color: #444;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebarIcon:hover {
+  color: rgb(147, 190, 255);
+}
+
+.sidebarTagTitle,
+.sidebarSocialTitle {
+  margin-top: 3rem;
+}

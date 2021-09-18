@@ -1,0 +1,38 @@
+.title {
+  text-align: center;
+}
+
+.btncls {
+  width: 3rem;
+  border-radius: 20%;
+  height: 5rem;
+  top: 40%;
+}
+
+.form-group {
+  margin-top: 2rem;
+}
+
+.contact {
+  background: #ffffff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  padding: 4rem 0 4rem 0;
+  .contact-form {
+    padding: 3rem;
+  }
+  .contact-info {
+    margin-top: 3rem;
+    .contact-email,
+    .contact-phone,
+    .contact-address {
+      color: black;
+      display: flex;
+      margin-top: 3rem;
+
+      .icon {
+        margin: 0 1rem 0 1rem;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
