@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const Tag = require("../models/Tag");
+const Category = require("../models/Category");
 const { postVerify, editDeleteVerify } = require("./verifyToken");
 
 router.post("/", postVerify, async (req, res) => {
@@ -8,6 +9,13 @@ router.post("/", postVerify, async (req, res) => {
 
   var tags = await Tag.find();
   var tagList = [];
+  var cat = await Category.findOne({ name: req.body.category });
+  if (cat)
+    await Category.updateOne(
+      { name: req.body.category },
+      { count: cat.count + 1 }
+    );
+
   tags.map((tag) => tagList.push(tag.name));
 
   req.body.tags.map((tag) => {
@@ -28,10 +36,11 @@ router.post("/", postVerify, async (req, res) => {
     tags: req.body.tags,
     category: req.body.category,
   });
+  console.log(newPost);
 
   try {
     const savedPost = await newPost.save();
-    res.status(200).send(savedPost);
+    res.status(200).json(savedPost);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -48,7 +57,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const post = await Post.find({ _id: req.params.id });
+    const post = await Post.findById(req.params.id);
     res.status(200).json(post);
   } catch (err) {
     res.status(500).json(err);
@@ -56,8 +65,15 @@ router.get("/:id", async (req, res) => {
 });
 
 router.delete("/:id", editDeleteVerify, async (req, res) => {
+  var cat = await Category.findOne({ name: req.body.category });
+  if (cat)
+    await Category.updateOne(
+      { name: req.body.category },
+      { count: cat.count - 1 }
+    );
+
   try {
-    const post = await Post.findByIdAndDelete(req.params.id);
+    await Post.findByIdAndDelete(req.params.id);
     res.status(200).json("Deleted Successfully");
   } catch (err) {
     res.status(500).json(err);
@@ -67,7 +83,7 @@ router.delete("/:id", editDeleteVerify, async (req, res) => {
 router.put("/:id", editDeleteVerify, async (req, res) => {
   console.log(req.body);
   try {
-    const post = await Post.findByIdAndUpdate(
+    await Post.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,

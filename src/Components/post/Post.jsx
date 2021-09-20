@@ -1,6 +1,7 @@
 import "./post.css";
+import { Link } from "react-router-dom";
 
-const Post = () => {
+const Post = ({ post }) => {
   return (
     <div className="post">
       <img
@@ -9,22 +10,19 @@ const Post = () => {
       />
       <div className="postInfo">
         <div className="postCats">
-          <span className="postCat">Music</span>
-          <span className="postCat">Entertainment</span>
+          {post.tags.map((tag) => (
+            <span className="postCat" key={tag._id}>
+              {tag.name}
+            </span>
+          ))}
         </div>
-        <div className="postTitle">Lorem ipsum dolor sit amet.</div>
+        <div className="postTitle">
+          <Link to={"/post/" + post._id}>{post.title}</Link>
+        </div>
         <hr />
-        <div className="postDate">1 Hour Ago</div>
+        <div className="postDate">{post.createdAt}</div>
       </div>
-      <p className="postDesc">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab omnis
-        perferendis veniam voluptatem molestiae cum nemo quisquam explicabo
-        delectus nostrum, voluptate quae dicta quam amet sunt natus itaque
-        praesentium laborum! Lorem ipsum, dolor sit amet consectetur adipisicing
-        elit. Numquam expedita mollitia laborum asperiores, quaerat aliquam
-        officiis. Reprehenderit quam, blanditiis iste aut hic corporis
-        exercitationem perferendis optio dolores, necessitatibus, odit iure
-      </p>
+      <p className="postDesc">{post.desc}</p>
     </div>
   );
 };

@@ -1,22 +1,22 @@
 import "./singlePost.css";
 
-const SinglePost = () => {
+const SinglePost = ({ post }) => {
+  console.log(post);
   return (
     <div className="singlePost">
       <div className="singlePostTop">
-        <h1>Blog Post</h1>
-        <img
-          src="https://i1.wp.com/www.globalbrandsmagazine.com/wp-content/uploads/2013/10/Dell-Inspiron-1.png?resize=740%2C574&ssl=1"
-          className="singlePostImg"
-        />
-
-        <h1 className="singlePostTitle">Lorem, ipsum dolor.</h1>
+        <h1 className="singlePostTitle">{post.title}</h1>
         <div className="singlePostDetails">
-          <div className="singlePostleft">1 Years ago by adnantech17</div>
+          <div className="singlePostleft">
+            {post.createdAt} by {post.user_id}
+          </div>
           <div className="singlePostRight">
             <div className="postCats">
-              <span className="postCat">Music</span>
-              <span className="postCat">Entertainment</span>
+              {post.tags.map((tag) => (
+                <span className="postCat" key={tag._id}>
+                  {tag.name}
+                </span>
+              ))}
             </div>
             <div className="singlePostComment">
               <i className="fas fa-comments"></i> (0)
@@ -25,47 +25,7 @@ const SinglePost = () => {
         </div>
       </div>
 
-      <p className="singlePostDescription">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, odio
-        dolores provident sunt quae corrupti ipsum! Ipsam laboriosam, fugit nemo
-        ullam voluptas minus inventore animi aliquid minima voluptate odio
-        soluta blanditiis sit quam impedit dolore quibusdam saepe obcaecati
-        doloribus, est, reprehenderit voluptatum et fugiat! Consequatur
-        repellendus excepturi voluptate expedita molestias. Maxime, consectetur
-        quas. Nostrum, tempore quisquam perferendis minus voluptatum vel quos
-        culpa repellat maxime ex modi accusamus natus minima obcaecati laborum
-        esse veniam! Totam voluptatum sit quas natus delectus deleniti
-        doloremque odit debitis libero, ipsa quae
-        <br />
-        reprehenderit dolorum magnam consequatur amet vitae consequuntur.
-        Necessitatibus, ex repudiandae at libero tempora natus. Lorem ipsum
-        dolor sit amet consectetur adipisicing elit. Ea, odio dolores provident
-        sunt quae corrupti ipsum! Ipsam laboriosam, fugit nemo ullam voluptas
-        minus inventore animi aliquid minima voluptate odio soluta blanditiis
-        sit quam impedit dolore quibusdam saepe obcaecati doloribus, est,
-        reprehenderit voluptatum et fugiat! Consequatur repellendus excepturi
-        voluptate expedita molestias. Maxime,
-        <br />
-        consectetur quas. Nostrum, tempore quisquam perferendis minus voluptatum
-        vel quos culpa repellat maxime ex modi accusamus natus minima obcaecati
-        laborum esse veniam! Totam voluptatum sit quas natus delectus deleniti
-        doloremque odit debitis libero, ipsa quae reprehenderit dolorum magnam
-        consequatur amet vitae consequuntur. Necessitatibus, ex repudiandae at
-        libero tempora natus. Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Ea, odio dolores
-        <br />
-        provident sunt quae corrupti ipsum! Ipsam laboriosam, fugit nemo ullam
-        voluptas minus inventore animi aliquid minima voluptate odio soluta
-        blanditiis sit quam impedit dolore quibusdam saepe obcaecati doloribus,
-        est, reprehenderit voluptatum et fugiat! Consequatur repellendus
-        excepturi voluptate expedita molestias. Maxime, consectetur quas.
-        Nostrum, tempore quisquam perferendis minus voluptatum vel quos culpa
-        repellat maxime ex modi accusamus natus minima obcaecati laborum esse
-        veniam! Totam voluptatum sit quas natus delectus deleniti doloremque
-        odit debitis libero, ipsa quae reprehenderit dolorum magnam consequatur
-        amet vitae consequuntur. Necessitatibus, ex repudiandae at libero
-        tempora natus.
-      </p>
+      <p className="singlePostDescription">{post.desc}</p>
 
       <div className="singlePostForm">
         <h3>Leave a Comment</h3>

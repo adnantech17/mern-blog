@@ -1,20 +1,71 @@
 import "./login.scss";
 import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { LoginContext } from "../../Context/LoginContext";
+import { Form, Formik } from "formik";
+import { TextField } from "../../Components/TextField/TextField";
+import * as Yup from "yup";
 
 const LoginPage = () => {
+  const [err, setErr] = useState("");
+  const validate = Yup.object({
+    email: Yup.string()
+      .min(6, "Email must be at least 6 character")
+      .required("Email is Required")
+      .email("Email is invalid"),
+    password: Yup.string().required("Password is Required."),
+  });
+  const [, setLogin] = useContext(LoginContext);
+
   return (
-    <div class="login-page">
-      <div class="form">
-        <form class="login-form">
-          <input type="text" placeholder="username" />
-          <input type="password" placeholder="password" />
-          <button>login</button>
-          <p class="message">
-            Not registered? <Link to="/register">Create an account</Link>
-          </p>
-        </form>
-      </div>
-    </div>
+    <Formik
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      validationSchema={validate}
+      onSubmit={async (values) => {
+        fetch("/user/login", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
+        })
+          .then((data) => {
+            if (data.ok) setLogin(true);
+            return data.json();
+          })
+          .then((data) => {
+            if (data.err) setErr(data.err);
+          })
+          .catch((err) => console.log(err));
+      }}
+    >
+      {(formik) => (
+        <div className="login-page">
+          <div className="form">
+            {err !== "" && <h6 className="error-top">* {err}</h6>}
+            <Form className="login-form">
+              <TextField type="text" placeholder="Email*" name="email" />
+              <TextField
+                type="password"
+                placeholder="Password*"
+                name="password"
+              />
+              <button>login</button>
+              <p className="message">
+                Not registered? <Link to="/register">Create an account</Link>
+              </p>
+            </Form>
+          </div>
+        </div>
+      )}
+    </Formik>
   );
 };
 

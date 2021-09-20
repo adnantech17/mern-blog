@@ -1,42 +1,50 @@
+import { useEffect, useState } from "react";
 import "./sidebar.css";
 
 const Sidebar = () => {
+  const [cats, setCats] = useState(null);
+  const [tags, setTags] = useState(null);
+  useEffect(() => {
+    fetch("/category")
+      .then((response) => response.json())
+      .then((data) => {
+        setCats(data);
+      })
+      .catch((err) => console.error(err));
+
+    fetch("/tags")
+      .then((response) => response.json())
+      .then((data) => {
+        setTags(data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <div className="sidebar">
       <h3 className="sidebarCatTitle">Categories</h3>
       <div className="sidebarCats">
-        <p className="sidebarCat">
-          <span>React</span>
-          <span>(2)</span>
-        </p>
-        <p className="sidebarCat">
-          Node<span>(2)</span>
-        </p>
-        <p className="sidebarCat">
-          Django<span>(5)</span>
-        </p>
-        <p className="sidebarCat">
-          Blockchain<span>(6)</span>
-        </p>
-        <p className="sidebarCat">
-          Cats<span>(3)</span>
-        </p>
-        <p className="sidebarCat">
-          Music<span>(1)</span>
-        </p>
-        <p className="sidebarCat">
-          Travel<span>(1)</span>
-        </p>
+        {cats ? (
+          cats.map((cat) => (
+            <p className="sidebarCat" key={cat._id}>
+              <span>{cat.name}</span>
+              <span>({cat.count})</span>
+            </p>
+          ))
+        ) : (
+          <h1>Loading</h1>
+        )}
       </div>
       <h3 className="sidebarTagTitle">Tags</h3>
       <div className="sidebarTags">
-        <span className="sidebarTag">Tutorial</span>
-        <span className="sidebarTag">Node</span>
-        <span className="sidebarTag">Django</span>
-        <span className="sidebarTag">Crypto</span>
-        <span className="sidebarTag">Blockchain</span>
-        <span className="sidebarTag">Music</span>
-        <span className="sidebarTag">Song</span>
+        {tags ? (
+          tags.map((tag) => (
+            <span key={tag._id} className="sidebarTag">
+              {tag.name}
+            </span>
+          ))
+        ) : (
+          <h1>Loading</h1>
+        )}
       </div>
       <h3 className="sidebarSocialTitle">Social Media</h3>
       <div className="sidebarSocialAccounts">

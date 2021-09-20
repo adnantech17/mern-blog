@@ -1,21 +1,82 @@
 import "./register.scss";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Form, Formik } from "formik";
+import { TextField } from "../../Components/TextField/TextField";
+import * as Yup from "yup";
+
 const RegisterPage = () => {
+  const [err, setErr] = useState("");
+  const validate = Yup.object({
+    name: Yup.string()
+      .min(4, "Name must be at least 4 character")
+      .required("Name is Required"),
+    email: Yup.string()
+      .min(6, "Email must be at least 6 character")
+      .required("Email is Required")
+      .email("Email is invalid"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters long")
+      .required("Password is Required."),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Password must match")
+      .required("Confirm Password is Required."),
+  });
   return (
-    <div class="login-page">
-      <div class="form">
-        <form class="register-form">
-          <input type="text" placeholder="Email Address" />
-          <input type="text" placeholder="Name" />
-          <input type="password" placeholder="Password" />
-          <input type="password" placeholder="Confirm Password" />
-          <button>create</button>
-          <p class="message">
-            Already registered? <Link to="/login">Sign In</Link>
-          </p>
-        </form>
-      </div>
-    </div>
+    <Formik
+      initialValues={{
+        email: "",
+        name: "",
+        password: "",
+        confirmPassword: "",
+      }}
+      validationSchema={validate}
+      onSubmit={async (values) => {
+        await fetch("/user/register", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: values.name,
+            email: values.email,
+            password: values.password,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.err) setErr(data.err);
+          })
+          .catch((err) => console.log(err));
+      }}
+    >
+      {(formik) => (
+        <div className="login-page">
+          <div className="form">
+            {err !== "" && <h6 className="error-top">* {err}</h6>}
+            <Form className="register-form">
+              <TextField type="text" placeholder="Email Address" name="email" />
+              <TextField type="text" placeholder="Name" name="name" />
+              <TextField
+                type="password"
+                placeholder="Password"
+                name="password"
+              />
+              <TextField
+                type="password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+              />
+              <button>create</button>
+              <p className="message">
+                Already registered? <Link to="/login">Sign In</Link>
+              </p>
+            </Form>
+          </div>
+        </div>
+      )}
+    </Formik>
   );
 };
 
